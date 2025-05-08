@@ -1,20 +1,29 @@
-// src/App.jsx
 import { useState } from "react";
 import QRScanner from "./components/QRScanner";
 
-function App() {
-  const [data, setData] = useState(null);
+export default function App() {
+  const [scannedData, setScannedData] = useState(null);
+  const [scanAgain, setScanAgain] = useState(false);
+
   const handleScan = (data) => {
-    setData(data);
+    setScannedData(data);
+    setScanAgain(false); // Dừng scanner
   };
 
   return (
     <div style={{ padding: 20 }}>
       <h1>Quét mã QR</h1>
-      <QRScanner onScan={handleScan} />
-      <p>{data}</p>
+
+      {!scannedData || scanAgain ? (
+        <QRScanner onScan={handleScan} />
+      ) : (
+        <div>
+          <p>
+            ✅ Đã quét được: <b>{scannedData}</b>
+          </p>
+          <button onClick={() => setScanAgain(true)}>🔄 Quét lại</button>
+        </div>
+      )}
     </div>
   );
 }
-
-export default App;
